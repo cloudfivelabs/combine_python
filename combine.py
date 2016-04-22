@@ -8,30 +8,14 @@ parser.add_argument('left_file', help='left CSV filename')
 parser.add_argument('right_file', help='right CSV filename')
 args = parser.parse_args()
 
-# 1. The <right> file may NOT be a previously combined file.
-
-# 2. The <left> file may be a previously combined file.
-
-# 3. If the module exists in both <left> and <right> files, then the combined record will look like this:
-# <module>|l1,l2,l3,l4,l5;r1,r2,r3,r4,r5
-
-# 4. If the module only exists in the <left> file, then the combined record will look like this:
-# <module>|l1,l2,l3,l4,l5;,,,,
-
-# 5. If the module only exists in the <right> file, then the combined record will look like this:
-# <module>|,,,,;r1,r2,r3,r4,r5
-
 # Dictionary to hold module KEY/VALUE pairs
 module_dictionary = {}
 
 # the CSV header row from the left file
 left_header_row     = None
 
-#
 number_of_left_columns = None
 number_of_right_columns = None
-
-empty_module_values = None
 
 def get_padding( header_string ):
     padding_string=""
@@ -42,7 +26,7 @@ def get_padding( header_string ):
             continue
     return padding_string
 
-# Parse the right file first because it is always fixed length
+# Parse the left file first because it is variable length
 with open( args.left_file, 'r') as file:
   # read each line into a list of lines
   list_of_lines = file.readlines()
@@ -107,8 +91,8 @@ key_values = ( right_header_row.rstrip('\n') ).split("|")
 print key_values[0]+'|'+ module_dictionary.get( key_values[0] )
 del module_dictionary[key_values[0]]
 
+# pretty print our answer
 for keyz,valuez in sorted( module_dictionary.items() ):
-    if args.debug: print "value length: {} column length {}".format( len( valuez ), number_of_right_columns+number_of_left_columns )
     if args.debug: print "length: {} expected {}".format( valuez.count(","), ( padding_for_left_file_values+padding_for_right_file_values).count(",") )
     if valuez.count(",") <  ( padding_for_left_file_values+padding_for_right_file_values).count(","):
         print "{}|{}".format( keyz, valuez+';'+padding_for_left_file_values )
