@@ -1,0 +1,4 @@
+module|density/KLOC,bugs,LOC,maxCCN,avgCCN;density/KLOC,bugs,LOC,maxCCN,avgCCN
+mod-a|0.0,0,778,8,1.68;,,,,
+mod-b|1.0,137,139048,75,2.20;2.0,237,139048,75,2.20
+mod-c|,,,,;0.8,2,2574,34,2.60
